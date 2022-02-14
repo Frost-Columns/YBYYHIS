@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @TableName("tbl_prescription")
-public class prescription {
+public class Prescription {
     @TableId
     private Integer presid;
     private Integer caseId;
