@@ -1,0 +1,26 @@
+package com.gdlgxy.ybyyhisservice;
+
+import com.gdlgxy.ybyyhisservice.dao.CureMapper;
+import com.gdlgxy.ybyyhisservice.dao.StatesMapper;
+import org.junit.jupiter.api.Test;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+@MapperScan
+class YbyyHisServiceApplicationTests {
+
+    @Autowired
+    private StatesMapper statesMapper;
+
+    @Autowired
+    private CureMapper cureMapper;
+
+    @Test
+    void contextLoads() {
+        System.out.println(statesMapper.selectList(null));
+        System.out.println(cureMapper.selectList(null));
+    }
+
+}
