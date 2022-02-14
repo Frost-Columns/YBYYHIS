@@ -1,7 +1,7 @@
-package com.gdlgxy.ybyyhisservice;
+package com.gdlgxy.ybyyhisserver;
 
-import com.gdlgxy.ybyyhisservice.dao.CureMapper;
-import com.gdlgxy.ybyyhisservice.dao.StatesMapper;
+import com.gdlgxy.ybyyhisserver.dao.CureMapper;
+import com.gdlgxy.ybyyhisserver.dao.StatesMapper;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @MapperScan
-class YbyyHisServiceApplicationTests {
+class YbyyHisServerApplicationTests {
 
     @Autowired
     private StatesMapper statesMapper;

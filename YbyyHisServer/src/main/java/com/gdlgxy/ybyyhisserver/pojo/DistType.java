@@ -1,12 +1,12 @@
-package com.gdlgxy.ybyyhisservice.pojo;
+package com.gdlgxy.ybyyhisserver.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("tbl_dept_type")
-public class DeptType {
+@TableName("tbl_dist_type")
+public class DistType {
     @TableId
     private Integer dtid;
     private String dtname;

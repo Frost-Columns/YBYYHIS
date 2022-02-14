@@ -1,7 +1,7 @@
-package com.gdlgxy.ybyyhisservice.dao;
+package com.gdlgxy.ybyyhisserver.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.gdlgxy.ybyyhisservice.pojo.States;
+import com.gdlgxy.ybyyhisserver.pojo.States;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

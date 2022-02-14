@@ -1,4 +1,4 @@
-package com.gdlgxy.ybyyhisservice.pojo;
+package com.gdlgxy.ybyyhisserver.pojo;
 
 import lombok.Data;
 

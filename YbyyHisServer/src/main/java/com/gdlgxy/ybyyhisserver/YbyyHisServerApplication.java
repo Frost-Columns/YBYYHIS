@@ -1,13 +1,13 @@
-package com.gdlgxy.ybyyhisservice;
+package com.gdlgxy.ybyyhisserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class YbyyHisServiceApplication {
+public class YbyyHisServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YbyyHisServiceApplication.class, args);
+        SpringApplication.run(YbyyHisServerApplication.class, args);
     }
 
 }
