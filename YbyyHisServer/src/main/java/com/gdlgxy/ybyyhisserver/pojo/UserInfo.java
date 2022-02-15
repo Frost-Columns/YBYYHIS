@@ -7,7 +7,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-@TableName
+@TableName("tbl_user_info")
 public class UserInfo {
     @TableId
     private Integer userid;
