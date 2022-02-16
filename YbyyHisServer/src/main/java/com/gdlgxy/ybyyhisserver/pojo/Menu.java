@@ -13,4 +13,5 @@ public class Menu {
     private String menuname;
     private String menunamezh;
     private String url;
+    private String icon;
 }

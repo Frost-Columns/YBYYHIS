@@ -5,6 +5,16 @@ spring:
     username: Frost
     password: chen6185653
     driver-class-name: com.mysql.cj.jdbc.Driver
+    #切换数据源为数据池druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid配置
+    initialSize: 5
+    minIdle: 10
+    maxActive: 20
+    maxWait: 6000
+    timeBetweenEvictionRunsMillis: 2000
+    minEvictableIdleTimeMillis: 600000
+    maxEvictableIdleTimeMillis: 900000
 server:
   port: 80
 mybatis-plus:

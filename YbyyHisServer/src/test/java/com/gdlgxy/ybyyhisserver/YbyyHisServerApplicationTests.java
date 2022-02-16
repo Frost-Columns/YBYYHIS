@@ -1,7 +1,7 @@
 package com.gdlgxy.ybyyhisserver;
 
-import com.gdlgxy.ybyyhisserver.dao.CureMapper;
-import com.gdlgxy.ybyyhisserver.dao.StatesMapper;
+import com.gdlgxy.ybyyhisserver.mapper.CureMapper;
+import com.gdlgxy.ybyyhisserver.mapper.StatesMapper;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
