@@ -23,5 +23,6 @@ public class UserInfo {
     private String dname;
     private Timestamp createTime;
     private Integer state;
+    private String sname;
     private String uprofile;
 }

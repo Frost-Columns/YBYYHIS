@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="background">
     <el-header style="text-align: right; font-size: 12px">
       <el-dropdown>
         <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -11,7 +11,7 @@
       </el-dropdown>
       <span>王小虎</span>
     </el-header>
-    <el-container style="height: 500px; border: 1px solid #eee">
+    <el-container style="height: 100%; border: 1px solid #eee">
 
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
         <el-menu router :default-openeds="['2']">
@@ -27,6 +27,7 @@
       </el-container>
 
     </el-container>
+    <el-footer style="text-align: right; font-size: 12px">Footer</el-footer>
   </div>
 </template>
 
@@ -48,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-.el-header {
+.el-header, .el-footer {
   background-color: #B3C0D1;
   color: #333;
   line-height: 60px;
@@ -56,5 +57,9 @@ export default {
 
 .el-aside {
   color: #333;
+}
+
+.background {
+  height: 87%;
 }
 </style>
