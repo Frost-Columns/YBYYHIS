@@ -49,16 +49,13 @@ export default {
     login() {
       this.$refs.loginFormRef.validate(valid => {
         if (!valid) return;
-        // this.$http.get("/login", this.from).then((res) => {
-        //   console.log(res.data);
-        // });
         axios.post("/login", this.from).then((res) => {
-          if(res.data.message) {
-            this.$message.success('登录成功！');
-            sessionStorage.setItem("token", res.data.token);
+          if(res.data.code == 200) {
+            this.$message.success(res.data.msg);
+            sessionStorage.setItem("token", res.data.data);
             this.$router.push("/Main");
           }else {
-            this.$message.error('账号或密码错误！');
+            this.$message.error(res.data.msg);
           }
         });
       });

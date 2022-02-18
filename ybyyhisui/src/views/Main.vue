@@ -42,7 +42,7 @@ export default {
   methods: {},
   mounted() {
     axios.post('/menu').then((res) => {
-      this.menu = res.data;
+      this.menu = res.data.data;
     });
   }
 }

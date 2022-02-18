@@ -11,7 +11,7 @@ public class Dept {
     private Integer deptid;
     private String dname;
     private Integer dtId;
-    private String deptRemarks;
+    private String deptProfile;
     private String loc;
     private Integer state;
 }
