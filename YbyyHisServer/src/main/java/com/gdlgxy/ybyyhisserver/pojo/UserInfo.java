@@ -18,9 +18,8 @@ public class UserInfo {
     private Integer sex;
     private Timestamp birthday;
     private Integer roleId;
-    private String rname;
+    private Integer dtId;
     private Integer deptId;
-    private String dname;
     private Timestamp createTime;
     private Integer state;
     private String sname;

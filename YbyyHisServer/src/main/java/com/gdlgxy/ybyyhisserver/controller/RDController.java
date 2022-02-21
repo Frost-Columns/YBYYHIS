@@ -27,6 +27,7 @@ public class RDController {
     @GetMapping("/RoleAndDeptList")
     public ResultVO getRoleAndDeptList(){
         Map<String, Object> map = new HashMap<>();
+        map.put("depttype", deptTypeMapper.selectList(null));
         map.put("role", roleMapper.selectList(null));
         map.put("dept", deptMapper.selectList(null));
         return new ResultVO(200,"查询成功！",map,null);
