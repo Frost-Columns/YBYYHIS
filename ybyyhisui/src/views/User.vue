@@ -128,7 +128,7 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
-              @current-change="getUserList()">
+              @current-change="getUserList">
           </el-pagination>
           <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>
         </el-main>
@@ -158,7 +158,7 @@
               </el-form-item>
             </el-col>
           </el-form-item>
-          <el-form-item prop="role">
+          <el-form-item prop="roleId">
             <el-select v-model="userfrom.roleId" placeholder="职位" style="width: 80%;">
               <el-option
                   v-for="item in rolelist"
@@ -178,7 +178,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="dept">
+          <el-form-item prop="deptId">
             <el-select v-model="userfrom.deptId" placeholder="科室" style="width: 80%;">
               <el-option
                   v-for="item in dtdept"
@@ -258,13 +258,13 @@ export default {
         birthday: [
           {required: true, message: '请输入生日', trigger: 'blur'}
         ],
-        role: [
+        roleId: [
           {required: true, message: '请选择职位', trigger: 'blur'}
         ],
-        dept: [
+        deptId: [
           {required: true, message: '请选择科室', trigger: 'blur'}
         ]
-      },
+      }
     }
   },
   methods: {
@@ -319,9 +319,8 @@ export default {
       this.getDept(this.userfrom.dtId);
       this.drawer = true;
     },
-    onSubmit(userfrom) {
-      this.$refs[userfrom].validate = function (valid) {
-        console.log('123')
+    onSubmit(ufrom) {
+      this.$refs[ufrom].validate((valid) => {
         if (valid) {
           var url = '';
           if (this.userfrom.userid == '') {
@@ -341,7 +340,7 @@ export default {
         } else {
           return false;
         }
-      }
+      });
     },
     updateStateUser(row, state) {
       var url = '';
@@ -362,7 +361,12 @@ export default {
         type: 'warning'
       }).then(() => {
         axios.post(url, row).then((res) => {
-          this.getUserList(this.index);
+          if(res.data.code == 200) {
+            this.$message.success(res.data.msg);
+            this.getUserList(this.index);
+          }else {
+            this.$message.error(res.data.msg);
+          }
         })
       }).catch(() => {
         return

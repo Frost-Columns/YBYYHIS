@@ -63,47 +63,35 @@ public class UserController {
         userInfo.setSname("正常");
         System.out.println(userInfo);
         userInfoMapper.insert(userInfo);
-        return new ResultVO(200, "", true, null);
+        return new ResultVO(200, "用户添加成功！", true, null);
     }
 
     @PostMapping("/UpdateUser")
     public ResultVO updateUser(@RequestBody UserInfo userInfo) {
         System.out.println(userInfo);
         System.out.println(userInfoMapper.updateById(userInfo));
-        return new ResultVO(200, "", true, null);
+        return new ResultVO(200, "修改成功！", true, null);
     }
 
     @PostMapping("/FreezeUser")
     public ResultVO freezeUserUser(@RequestBody UserInfo userInfo) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("stateno", 102);
-        userInfo.setState(102);
-        userInfo.setSname(statesMapper.selectByMap(map).get(0).getStatename());
-        if (userInfoMapper.updateById(userInfo) == 1) {
-            return new ResultVO(200, "修改成功！", true, null);
-        } else {
-            return new ResultVO(201, "修改失败！", false, null);
-        }
+        return updateStateUser(userInfo,102);
     }
 
     @PostMapping("/ThawUser")
     public ResultVO thawUser(@RequestBody UserInfo userInfo) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("stateno", 100);
-        userInfo.setState(100);
-        userInfo.setSname(statesMapper.selectByMap(map).get(0).getStatename());
-        if (userInfoMapper.updateById(userInfo) == 1) {
-            return new ResultVO(200, "修改成功！", true, null);
-        } else {
-            return new ResultVO(201, "修改失败！", false, null);
-        }
+        return updateStateUser(userInfo,100);
     }
 
     @PostMapping("/CancellationUser")
     public ResultVO cancellationUser(@RequestBody UserInfo userInfo) {
+        return updateStateUser(userInfo,101);
+    }
+
+    private ResultVO updateStateUser(UserInfo userInfo,Integer state){
         Map<String, Object> map = new HashMap<>();
-        map.put("stateno", 101);
-        userInfo.setState(101);
+        map.put("stateno", state);
+        userInfo.setState(state);
         userInfo.setSname(statesMapper.selectByMap(map).get(0).getStatename());
         if (userInfoMapper.updateById(userInfo) == 1) {
             return new ResultVO(200, "修改成功！", true, null);

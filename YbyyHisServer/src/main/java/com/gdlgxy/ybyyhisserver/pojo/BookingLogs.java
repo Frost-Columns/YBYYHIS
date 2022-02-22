@@ -1,5 +1,6 @@
 package com.gdlgxy.ybyyhisserver.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -9,7 +10,7 @@ import java.sql.Timestamp;
 @Data
 @TableName("tbl_booking_logs")
 public class BookingLogs {
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer blid;
     private Integer registerId;
     private Integer patientId;

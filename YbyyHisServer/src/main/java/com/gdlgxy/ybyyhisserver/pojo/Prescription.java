@@ -1,5 +1,6 @@
 package com.gdlgxy.ybyyhisserver.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -7,7 +8,7 @@ import lombok.Data;
 @Data
 @TableName("tbl_prescription")
 public class Prescription {
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer presid;
     private Integer caseId;
     private Integer drugsId;

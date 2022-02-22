@@ -6,6 +6,8 @@ import Login from '../views/Login'
 import Main from '../views/Main'
 import Home from '../views/Home'
 import User from '../views/User'
+import Dept from '../views/Dept'
+import Perm from '../views/Perm'
 
 Vue.use(VueRouter)
 
@@ -33,6 +35,16 @@ const routes = [
         path: '/user',
         name: 'User',
         component: User
+      },
+      {
+        path: '/dept',
+        name: 'Dept',
+        component: Dept
+      },
+      {
+        path: '/perm',
+        name: 'Perm',
+        component: Perm
       }
     ]
   }
