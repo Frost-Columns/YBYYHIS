@@ -12,4 +12,11 @@ public class RolePerm {
     private Integer rpid;
     private Integer roleId;
     private Integer permId;
+
+    public RolePerm(){}
+
+    public RolePerm(Integer roleid, Integer permid){
+        this.roleId = roleid;
+        this.permId = permid;
+    }
 }

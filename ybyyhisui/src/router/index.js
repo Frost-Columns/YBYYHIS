@@ -8,6 +8,7 @@ import Home from '../views/Home'
 import User from '../views/User'
 import Dept from '../views/Dept'
 import Perm from '../views/Perm'
+import Patient from '../views/Patient'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes = [
         path: '/perm',
         name: 'Perm',
         component: Perm
+      },
+      {
+        path: '/patient',
+        name: 'Patient',
+        component: Patient
       }
     ]
   }

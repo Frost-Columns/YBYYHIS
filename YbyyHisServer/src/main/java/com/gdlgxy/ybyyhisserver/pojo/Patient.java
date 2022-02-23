@@ -11,13 +11,13 @@ import java.sql.Timestamp;
 @TableName("tbl_patient")
 public class Patient {
     @TableId(type = IdType.AUTO)
-    private Integer ptientid;
+    private Integer patientid;
     private String pname;
     private Integer sex;
     private Timestamp birthday;
     private String idcard;
     private String home;
-    private Integer phone;
-    private Integer emergencyContact;
-    private Integer caseId;
+    private String phone;
+    private String emergencyContact;
+    private String heredity;
 }

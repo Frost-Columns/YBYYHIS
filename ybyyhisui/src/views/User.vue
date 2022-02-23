@@ -4,8 +4,11 @@
       <el-container style="width: 104%; margin: 0px -20px">
         <el-header>
           <el-row class="row-bg">
+            <el-col :md="1" style="margin: 11px">
+              <span style='color: white ; font-size: 16px' >员工管理</span>
+            </el-col>
             <el-col :md="3">
-            <el-input v-model="select.username" placeholder="名称关键字" style="width: 95%"></el-input>
+              <el-input v-model="select.username" placeholder="名称关键字" style="width: 95%"></el-input>
             </el-col>
             <el-col :md="2">
               <el-select v-model="select.roleId" placeholder="职位" style="width: 95%">
@@ -29,7 +32,7 @@
             </el-col>
             <el-col :md="4" style="margin: 11px">
               <el-checkbox-group v-model="select.checkList">
-                <el-checkbox label="100" >正常</el-checkbox>
+                <el-checkbox label="100">正常</el-checkbox>
                 <el-checkbox label="102">冻结</el-checkbox>
                 <el-checkbox label="101">注销</el-checkbox>
               </el-checkbox-group>
@@ -150,13 +153,9 @@
               <el-radio :label="0">女</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item required>
-            <el-col>
-              <el-form-item prop="birthday">
-                <el-date-picker type="date" placeholder="生日" :picker-options="pickerOptions" v-model="userfrom.birthday"
-                                style="width: 80%;"></el-date-picker>
-              </el-form-item>
-            </el-col>
+          <el-form-item required prop="birthday">
+            <el-date-picker type="date" placeholder="生日" :picker-options="pickerOptions" v-model="userfrom.birthday"
+                            style="width: 80%;"></el-date-picker>
           </el-form-item>
           <el-form-item prop="roleId">
             <el-select v-model="userfrom.roleId" placeholder="职位" style="width: 80%;">
@@ -241,7 +240,7 @@ export default {
         username: '',
         roleId: '',
         deptId: '',
-        checkList: ['100','102']
+        checkList: ['100', '102']
       },
       pickerOptions: {
         disabledDate(time) {
@@ -270,12 +269,12 @@ export default {
   methods: {
     getUserList(index) {
       var params = new URLSearchParams();
-      params.append("index",index)
-      params.append("username",this.select.username)
-      params.append("roleid",this.select.roleId)
-      params.append("deptid",this.select.deptId)
-      params.append("checklist",this.select.checkList)
-      axios.post("/userlist",params).then((res) => {
+      params.append("index", index)
+      params.append("username", this.select.username)
+      params.append("roleid", this.select.roleId)
+      params.append("deptid", this.select.deptId)
+      params.append("checklist", this.select.checkList)
+      axios.post("/userlist", params).then((res) => {
         this.index = res.data.data.current;
         this.total = res.data.data.total;
         this.userlist = res.data.data.records;
@@ -307,6 +306,9 @@ export default {
     },
     add() {
       this.title = '添加账户';
+      if(this.$refs['userfrom']!==undefined){
+        this.$refs['userfrom'].resetFields();
+      }
       for (var i in this.userfrom) {
         this.userfrom[i] = '';
       }
@@ -351,7 +353,7 @@ export default {
       } else if (state == 2) {
         title = '确认要注销该账户？';
         url = '/CancellationUser';
-      }else {
+      } else {
         title = '确认要解冻该账户？';
         url = '/ThawUser';
       }
@@ -361,10 +363,10 @@ export default {
         type: 'warning'
       }).then(() => {
         axios.post(url, row).then((res) => {
-          if(res.data.code == 200) {
+          if (res.data.code == 200) {
             this.$message.success(res.data.msg);
             this.getUserList(this.index);
-          }else {
+          } else {
             this.$message.error(res.data.msg);
           }
         })
@@ -372,11 +374,11 @@ export default {
         return
       })
     },
-    reset(){
+    reset() {
       for (var i in this.select) {
         this.select[i] = '';
       }
-      this.select.checkList = ['100','102'];
+      this.select.checkList = ['100', '102'];
       this.getUserList(1);
     }
   },

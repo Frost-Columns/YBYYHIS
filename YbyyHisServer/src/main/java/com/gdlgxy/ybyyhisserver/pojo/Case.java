@@ -13,6 +13,7 @@ public class Case {
     @TableId(type = IdType.AUTO)
     private Integer caseid;
     private Integer patientId;
+    private String pname;
     private String symptom;
     private String historyOfTreatment;
     private String pastHistory;
@@ -23,4 +24,6 @@ public class Case {
     private String cureSchedule;
     private String prescriptionStr;
     private Timestamp createTime;
+    private Integer state;
+    private String sname;
 }

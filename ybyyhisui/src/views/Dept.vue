@@ -4,6 +4,9 @@
       <el-container style="width: 102.5%; margin: 0px -20px">
         <el-header>
           <el-row class="row-bg">
+            <el-col :md="1" style="margin: 11px">
+              <span style='color: white ; font-size: 16px' >科室管理</span>
+            </el-col>
             <el-col :md="3">
               <el-input v-model="select.dname" placeholder="名称关键字" style="width: 95%"></el-input>
             </el-col>

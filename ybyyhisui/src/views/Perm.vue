@@ -4,7 +4,10 @@
       <el-container style="width: 102.5%; margin: 0px -20px">
         <el-header>
           <el-row class="row-bg">
-            <el-col :md="4" style="margin: 11px">
+            <el-col :md="1" style="margin: 11px">
+              <span style='color: white ; font-size: 16px' >权限管理</span>
+            </el-col>
+            <el-col :md="2" style="margin: 11px">
               <el-checkbox-group v-model="select.stateList">
                 <el-checkbox label="200">启用</el-checkbox>
                 <el-checkbox label="201">停用</el-checkbox>
@@ -105,10 +108,21 @@
           :visible.sync="RolePermDialogVisible"
           width="635px"
           center>
-        <el-transfer v-model="rolePermList" :data="permlist"></el-transfer>
+        <el-transfer :titles="['所有权限','拥有权限']" v-model="rolePermList" :data="permlist"></el-transfer>
         <span slot="footer" class="dialog-footer">
           <el-button @click="RolePermDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="RolePermDialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="rolePermSubmit()">确 定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog
+          title="菜单管理"
+          :visible.sync="RoleMenuDialogVisible"
+          width="635px"
+          center>
+        <el-transfer :titles="['所有菜单','可视菜单']" v-model="roleMenuList" :data="menulist"></el-transfer>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="RoleMenuDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="roleMenuSubmit()">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -127,6 +141,7 @@ export default {
       rolelist: [],
       permlist: [],
       menulist: [],
+      roleid: '',
       rolePermList: [],
       roleMenuList: [],
       rolefrom: {
@@ -219,14 +234,66 @@ export default {
       this.getRoleList();
     },
     rolePerm(row){
+      this.rolePermList = [];
+      axios.post("/RolePerm",row).then((res) => {
+        for(var i in res.data.data){
+          this.rolePermList.push(res.data.data[i].permId)
+        }
+      })
+      this.roleid = row.roleid;
       this.RolePermDialogVisible = true;
+    },
+    rolePermSubmit(){
+      var params = new URLSearchParams();
+      params.append("rpList",this.rolePermList)
+      params.append("roleid",this.roleid)
+      axios.post("/UpdateRolePerm",params).then((res) => {
+        if (res.data.data) {
+          this.$message.success(res.data.msg);
+          this.RolePermDialogVisible = false;
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
+    roleMenu(row){
+      this.roleMenuList = [];
+      axios.post("/RoleMenu",row).then((res) => {
+        for(var i in res.data.data){
+          this.roleMenuList.push(res.data.data[i].menuId)
+        }
+      })
+      this.roleid = row.roleid;
+      this.RoleMenuDialogVisible = true;
+    },
+    roleMenuSubmit(){
+      var params = new URLSearchParams();
+      params.append("rmList",this.roleMenuList)
+      params.append("roleid",this.roleid)
+      axios.post("/UpdateRoleMenu",params).then((res) => {
+        if (res.data.data) {
+          this.$message.success(res.data.msg);
+          this.RoleMenuDialogVisible = false;
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
     }
   },
   mounted() {
     axios.get("/PermAndMenuList").then((res) => {
-      this.permlist = res.data.data.perm;
-      this.menulist = res.data.data.menu;
-      console.log(this.permlist)
+      for(var i in res.data.data.perm){
+        this.permlist.push({
+          key: res.data.data.perm[i].permid,
+          label: res.data.data.perm[i].permnamezh
+        })
+      }
+      for(var i in res.data.data.menu){
+        this.menulist.push({
+          key: res.data.data.menu[i].menuid,
+          label: res.data.data.menu[i].menunamezh
+        })
+      }
     })
     this.getRoleList()
   }

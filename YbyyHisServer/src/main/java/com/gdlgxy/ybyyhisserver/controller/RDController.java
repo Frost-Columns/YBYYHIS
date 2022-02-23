@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.gdlgxy.ybyyhisserver.mapper.*;
-import com.gdlgxy.ybyyhisserver.pojo.Dept;
-import com.gdlgxy.ybyyhisserver.pojo.Menu;
-import com.gdlgxy.ybyyhisserver.pojo.Role;
-import com.gdlgxy.ybyyhisserver.pojo.UserInfo;
+import com.gdlgxy.ybyyhisserver.pojo.*;
 import com.gdlgxy.ybyyhisserver.utils.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +34,9 @@ public class RDController {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private RolePermMapper rolePermMapper;
 
     @Autowired
     private StatesMapper statesMapper;
@@ -150,5 +151,24 @@ public class RDController {
         } else {
             return new ResultVO(201, "修改失败！", false, null);
         }
+    }
+
+    @PostMapping("/RolePerm")
+    public ResultVO getRolePermList(@RequestBody Role role){
+        QueryWrapper<RolePerm> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("role_id",role.getRoleid());
+        return new ResultVO(200,"查询成功！",rolePermMapper.selectList(queryWrapper),null);
+    }
+
+    @PostMapping("/UpdateRolePerm")
+    public ResultVO updateRolePerm(Integer[] rpList,Integer roleid){
+        QueryWrapper<RolePerm> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("role_id",roleid);
+        rolePermMapper.delete(queryWrapper);
+        for(Integer rp:rpList){
+            if(rp == null) continue;
+            rolePermMapper.insert(new RolePerm(roleid,rp));
+        }
+        return new ResultVO(200, "修改成功！", true, null);
     }
 }

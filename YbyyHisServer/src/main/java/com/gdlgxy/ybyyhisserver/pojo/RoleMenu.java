@@ -12,4 +12,11 @@ public class RoleMenu {
     private Integer dmid;
     private Integer roleId;
     private Integer menuId;
+
+    public RoleMenu(){}
+
+    public RoleMenu(Integer roleid, Integer menuid){
+        this.roleId = roleid;
+        this.menuId = menuid;
+    }
 }
