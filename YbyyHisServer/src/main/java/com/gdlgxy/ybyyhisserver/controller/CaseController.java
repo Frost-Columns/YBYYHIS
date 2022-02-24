@@ -8,24 +8,27 @@ import com.gdlgxy.ybyyhisserver.pojo.Case;
 import com.gdlgxy.ybyyhisserver.pojo.UserInfo;
 import com.gdlgxy.ybyyhisserver.utils.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@Controller
 public class CaseController {
 
     @Autowired
     private CaseMapper caseMapper;
 
+    @ResponseBody
     @PostMapping("/caselist")
     public ResultVO getCaseList(Integer index, String pname, Integer[] statelist){
         IPage<Case> casePage = new Page<>(index, 10);
         QueryWrapper<Case> wrapper = new QueryWrapper<>();
-        wrapper.like("pname",pname);
+        wrapper.and(i -> i.like("pname",pname).or().like("caseid",pname));
         if (statelist.length != 0) {
             wrapper.in("state", statelist);
         }else {

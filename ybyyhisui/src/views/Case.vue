@@ -5,10 +5,10 @@
         <el-header>
           <el-row class="row-bg">
             <el-col :md="1" style="margin: 11px">
-              <span style='color: white ; font-size: 16px' >员工管理</span>
+              <span style='color: white ; font-size: 16px' >病例查询</span>
             </el-col>
             <el-col :md="3">
-              <el-input v-model="select.pname" placeholder="名称关键字" style="width: 95%"></el-input>
+              <el-input v-model="select.pname" placeholder="姓名/病历号" style="width: 95%"></el-input>
             </el-col>
             <el-col :md="4" style="margin: 11px">
               <el-checkbox-group v-model="select.stateList">
@@ -66,11 +66,12 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
-              @current-change="getUserList">
+              @current-change="getCaseList">
           </el-pagination>
           <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>
         </el-main>
       </el-container>
+
     </div>
   </div>
 </template>
@@ -83,9 +84,26 @@ export default {
       caselist: [],
       index: 1,
       total: 0,
+      caseinfo: {
+        caseid: '',
+        patientId: '',
+        pname: '',
+        symptom: '',
+        historyOfTreatment: '',
+        pastHistory: '',
+        allergen: '',
+        checkResultStr: '',
+        distId: '',
+        distRemarks: '',
+        cureSchedule: '',
+        prescriptionStr: '',
+        createTime: '',
+        state: '',
+        sname: ''
+      },
       select: {
         pname: '',
-        stateList: []
+        stateList: ['500']
       }
     }
   },
@@ -100,6 +118,31 @@ export default {
         this.total = res.data.data.total;
         this.caselist = res.data.data.records;
       })
+    },
+    add(){
+      for (var i in this.caseinfo) {
+        this.caseinfo[i] = '';
+      }
+      this.$router.push({
+        path: '/caseinfo',
+        name: 'CaseInfo',
+        params: this.caseinfo
+      })
+    },
+    caseInfo(row){
+      this.caseinfo = row;
+      this.$router.push({
+        path: '/caseinfo',
+        name: 'CaseInfo',
+        params: this.caseinfo
+      });
+    },
+    reset() {
+      for (var i in this.select) {
+        this.select[i] = '';
+      }
+      this.select.checkList = ['500', '501'];
+      this.getCaseList(1);
     }
   },
   mounted() {
@@ -109,5 +152,19 @@ export default {
 </script>
 
 <style scoped>
+.background {
+  width: 100%;
+  height: 100%;
+}
 
+.add {
+  position: absolute;
+  right: 40px;
+  bottom: 100px;
+}
+
+.row-bg {
+  padding: 10px 0px;
+  background-color: #e5f2ff;
+}
 </style>
