@@ -7,6 +7,12 @@
             <el-col :md="1" style="margin: 11px">
               <span style='color: white ; font-size: 16px' >病例详情</span>
             </el-col>
+            <el-col :md="1" :offset="19">
+              <el-button type="primary" @click="modify()" size="mini">编辑</el-button>
+            </el-col>
+            <el-col :md="1">
+              <el-button type="primary" @click="back()" size="mini">返回</el-button>
+            </el-col>
           </el-row>
         </el-header>
         <el-main>
@@ -35,12 +41,16 @@
                   <td colspan="3"><span>{{ caseinfo.allergen }}</span></td>
                 </tr>
                 <tr>
+                  <td class="title">症状</td>
+                  <td colspan="3" style="height: 500px"><span>{{ caseinfo.symptom }}</span></td>
+                </tr>
+                <tr>
                   <td class="title">检查结果</td>
                   <td colspan="3" style="height: 500px"><span>{{ caseinfo.checkResultStr }}</span></td>
                 </tr>
                 <tr>
                   <td class="title">诊断疾病</td>
-                  <td><span>{{ getDistName() }}</span></td>
+                  <td><span>{{ distname }}</span></td>
                   <td class="title">备注</td>
                   <td><span>{{ caseinfo.distRemarks }}</span></td>
                 </tr>
@@ -73,19 +83,31 @@ export default {
   name: "CaseInfo",
   data() {
     return {
-      caseinfo: this.$route.params
+      caseinfo: this.$route.params,
+      distname: ''
     }
   },
   methods: {
     getDistName(){
-      axios.post("/distname",this.caseinfo.distId).then((res) => {
-        return res.data.data.distname;
+      var params = new URLSearchParams();
+      params.append("distid", this.caseinfo.distId)
+      axios.post("/distname",params).then((res) => {
+        this.distname = res.data.data.distnamezh;
       });
+    },
+    modify(){
+      this.$router.push({
+        path: '/case/modify',
+        name: 'CaseModify',
+        params: this.caseinfo
+      })
+    },
+    back(){
+     this.$router.push("/case")
     }
   },
   mounted() {
-    console.log(this.caseinfo)
-    console.log(this.caseinfo.caseid)
+    this.getDistName();
   }
 }
 

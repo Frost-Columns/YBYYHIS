@@ -29,6 +29,11 @@ public class PatientController {
         return new ResultVO<>(200, "查询成功！", patientMapper.selectPage(patientPage, wrapper), null);
     }
 
+    @PostMapping("/patientall")
+    public ResultVO getPatientAll(){
+        return new ResultVO<>(200, "查询成功！", patientMapper.selectList(null), null);
+    }
+
     @PostMapping("/InsertPatient")
     public ResultVO addPatient(@RequestBody Patient patient) {
         patientMapper.insert(patient);

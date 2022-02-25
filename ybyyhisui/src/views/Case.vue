@@ -124,8 +124,8 @@ export default {
         this.caseinfo[i] = '';
       }
       this.$router.push({
-        path: '/caseinfo',
-        name: 'CaseInfo',
+        path: '/case/modify',
+        name: 'CaseModify',
         params: this.caseinfo
       })
     },
