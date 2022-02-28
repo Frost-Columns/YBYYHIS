@@ -29,8 +29,8 @@ export default {
   data() {
     return {
       from: {
-        username: '',
-        userpwd: ''
+        username: 'test',
+        userpwd: '123456'
       },
       rules: {
         username: [

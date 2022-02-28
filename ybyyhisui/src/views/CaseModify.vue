@@ -7,7 +7,10 @@
             <el-col :md="1" style="margin: 11px">
               <span style='color: white ; font-size: 16px' >病例详情</span>
             </el-col>
-            <el-col :md="1" :offset="21">
+            <el-col :md="1" :offset="20">
+              <el-button type="primary" @click="back()" size="mini">提交</el-button>
+            </el-col>
+            <el-col :md="1">
               <el-button type="primary" @click="back()" size="mini">返回</el-button>
             </el-col>
           </el-row>
@@ -111,13 +114,63 @@
                 </tr>
                 <tr>
                   <td class="title">处方</td>
-                  <td colspan="3" style="height: 500px">
-                    <el-input
-                        type="textarea"
-                        :rows="22"
-                        placeholder="请输入内容"
-                        v-model="caseinfo.prescriptionStr">
-                    </el-input>
+                  <td colspan="3" style="height: 500px; vertical-align: top;">
+<!--                    <el-input-->
+<!--                        type="textarea"-->
+<!--                        :rows="22"-->
+<!--                        placeholder="请输入内容"-->
+<!--                        v-model="caseinfo.prescriptionStr">-->
+<!--                    </el-input>-->
+                    <el-row>
+                      <el-col :md="4">
+                        <el-select v-model="patientid" placeholder="请选择" style="width: 100%">
+                          <el-option
+                              v-for="item in patientlist"
+                              :key="item.patientid"
+                              :label="item.pname"
+                              :value="item.patientid">
+                          </el-option>
+                        </el-select>
+                      </el-col>
+                      <el-col :md="4">
+                        <el-input type="Number" min="0" v-model="caseinfo.caseid" placeholder="请输入内容"></el-input>
+                      </el-col>
+                      <el-col :md="8">
+                        <el-input v-model="caseinfo.caseid" placeholder="服用说明"></el-input>
+                      </el-col>
+                      <el-col :md="1">
+                        <el-button type="primary" @click="back()">确认</el-button>
+                      </el-col>
+                    </el-row>
+
+                    <el-table
+                        :data="tableData"
+                        style="width: 100%">
+                      <el-table-column
+                          prop="date"
+                          label="药品">
+                      </el-table-column>
+                      <el-table-column
+                          prop="name"
+                          label="计量">
+                      </el-table-column>
+                      <el-table-column
+                          prop="address"
+                          label="说明">
+                      </el-table-column>
+                      <el-table-column
+                          prop="address"
+                          label="操作">
+                        <template slot-scope="scope">
+                          <el-button @click="modifyUser(scope.row)"
+                                     v-if="scope.row.state!=101"
+                                     type="text"
+                                     size="small">
+                            删除
+                          </el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
                   </td>
                 </tr>
                 <tr>
@@ -155,7 +208,7 @@ export default {
       caseinfo: this.$route.params,
       caseinfocopy: Object.assign({}, this.$route.params),
       initial: [],
-      patientid: 0,
+      patientid: '',
       patientlist: [],
       props: {
         lazy: true,
