@@ -1,11 +1,10 @@
 package com.gdlgxy.ybyyhisserver;
 
-import com.gdlgxy.ybyyhisserver.mapper.CureMapper;
-import com.gdlgxy.ybyyhisserver.mapper.DistMapper;
-import com.gdlgxy.ybyyhisserver.mapper.DistTypeMapper;
-import com.gdlgxy.ybyyhisserver.mapper.StatesMapper;
+import com.gdlgxy.ybyyhisserver.mapper.*;
 import com.gdlgxy.ybyyhisserver.pojo.Dist;
 import com.gdlgxy.ybyyhisserver.pojo.DistType;
+import com.gdlgxy.ybyyhisserver.pojo.Dosage;
+import com.gdlgxy.ybyyhisserver.pojo.Drugs;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ import java.util.List;
 class YbyyHisServerApplicationTests {
 
     @Autowired
-    private DistMapper distMapper;
+    private DrugsMapper drugsMapper;
 
     @Test
     void contextLoads() {
@@ -37,22 +36,26 @@ class YbyyHisServerApplicationTests {
             Class.forName(jdbc);
             conn = DriverManager.getConnection(url,user,password);
             stmt = conn.createStatement();
-            String sql = "SELECT * FROM dms_dise";
+            String sql = "SELECT * FROM dms_drug";
             ResultSet rs = stmt.executeQuery(sql);
-            List<Dist> list = new ArrayList<>();
+            List<Drugs> list = new ArrayList<>();
             while(rs.next()){
-                Dist dist = new Dist();
-                dist.setDistname(rs.getString("code"));
-                dist.setDistnamezh(rs.getString("name"));
-                dist.setDtId(rs.getInt("cat_id"));
-                list.add(dist);
+                Drugs drugs = new Drugs();
+                drugs.setDrugsname(rs.getString("mnemonic_code"));
+                drugs.setDrugsnamezh(rs.getString("name"));
+                drugs.setFormat(rs.getString("format"));
+                drugs.setPrice(rs.getDouble("price"));
+                drugs.setDosageId(rs.getInt("dosage_id"));
+                drugs.setManufacturer(rs.getString("manufacturer"));
+                drugs.setDrugeRemarks(rs.getString("generic_name"));
+                list.add(drugs);
             }
             rs.close();
             stmt.close();
             conn.close();
             System.out.println("写入开始"+list.size());
-            for(Dist d:list){
-                distMapper.insert(d);
+            for(Drugs d:list){
+                drugsMapper.insert(d);
             }
             System.out.println("写入完成！");
         } catch (Exception e) {

@@ -14,7 +14,9 @@ public class Drugs {
     private String drugsnamezh;
     private Integer dtId;
     private Integer count;
+    private String format;
     private Integer dosageId;
+    private String manufacturer;
     private Double price;
     private String drugeRemarks;
     private Integer state;

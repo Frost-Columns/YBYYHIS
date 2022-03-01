@@ -29,11 +29,11 @@
                 <tr>
                   <td class="title">患者ID</td>
                   <td>
-                    <el-input :model="patientid" placeholder="请输入内容" :disabled="true"></el-input>
+                    <el-input v-model="caseinfo.patientId" placeholder="请输入内容" :disabled="true"></el-input>
                   </td>
                   <td class="title">患者姓名</td>
                   <td>
-                    <el-select v-model="patientid" placeholder="请选择">
+                    <el-select v-model="caseinfo.patientId" placeholder="请选择" :disabled="patientstate">
                       <el-option
                           v-for="item in patientlist"
                           :key="item.patientid"
@@ -123,43 +123,52 @@
 <!--                    </el-input>-->
                     <el-row>
                       <el-col :md="4">
-                        <el-select v-model="patientid" placeholder="请选择" style="width: 100%">
+                        <el-select v-model="drugsid"
+                                   filterable
+                                   remote
+                                   placeholder="请输入药品名称关键字"
+                                   :remote-method="getDrugslist"
+                                   style="width: 100%">
                           <el-option
-                              v-for="item in patientlist"
-                              :key="item.patientid"
-                              :label="item.pname"
-                              :value="item.patientid">
+                              v-for="item in drugslist"
+                              :key="item.drugsid"
+                              :label="item.drugsnamezh"
+                              :value="item.drugsid">
+                            <span style="float: left">{{ item.drugsnamezh }}-库存:{{ item.count }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.format }}</span>
                           </el-option>
                         </el-select>
                       </el-col>
                       <el-col :md="4">
-                        <el-input type="Number" min="0" v-model="caseinfo.caseid" placeholder="请输入内容"></el-input>
+                        <el-input type="Number" min="1" v-model="drugscount" placeholder="剂量"></el-input>
                       </el-col>
                       <el-col :md="8">
-                        <el-input v-model="caseinfo.caseid" placeholder="服用说明"></el-input>
+                        <el-input v-model="takeRemarks" placeholder="服用说明"></el-input>
                       </el-col>
                       <el-col :md="1">
-                        <el-button type="primary" @click="back()">确认</el-button>
+                        <el-button type="primary" @click="addDrugs()">确认</el-button>
                       </el-col>
                     </el-row>
 
                     <el-table
-                        :data="tableData"
-                        style="width: 100%">
+                        :data="prescription"
+                        style="width: 100%; height: 500px"
+                        height="250">
                       <el-table-column
-                          prop="date"
                           label="药品">
+                        <template slot-scope="scope">
+                          <span style="margin-left: 10px">{{ scope.row.drugs.drugsnamezh }}</span>
+                        </template>
                       </el-table-column>
                       <el-table-column
-                          prop="name"
+                          prop="count"
                           label="计量">
                       </el-table-column>
                       <el-table-column
-                          prop="address"
+                          prop="takeRemarks"
                           label="说明">
                       </el-table-column>
                       <el-table-column
-                          prop="address"
                           label="操作">
                         <template slot-scope="scope">
                           <el-button @click="modifyUser(scope.row)"
@@ -206,10 +215,16 @@ export default {
   data() {
     return {
       caseinfo: this.$route.params,
+      patientstate: false,
       caseinfocopy: Object.assign({}, this.$route.params),
       initial: [],
       patientid: '',
       patientlist: [],
+      drugslist: [],
+      drugsid: '',
+      drugscount: 1,
+      takeRemarks: '',
+      prescription: [],
       props: {
         lazy: true,
         lazyLoad (node, resolve) {
@@ -268,6 +283,30 @@ export default {
         name: 'CaseInfo',
         params: this.caseinfocopy
       })
+    },
+    getDrugslist(query){
+      var params = new URLSearchParams();
+      params.append("drugsname", query)
+      axios.post("/DrugsListByName",params).then((res) => {
+        this.drugslist = res.data.data
+      })
+    },
+    addDrugs(){
+      for(var i in this.prescription){
+        if(this.prescription!=[] && this.prescription[i].drugs.drugsid == this.drugsid){
+          this.prescription[i].count = parseInt(this.prescription[i].count) + parseInt(this.drugscount);
+          return ;
+        }
+      }
+      var params = new URLSearchParams();
+      params.append("drugsid", this.drugsid)
+      axios.post("/getDrugs",params).then((res) => {
+        this.prescription.push({
+          drugs: res.data.data,
+          count: this.drugscount,
+          takeRemarks: this.takeRemarks
+        })
+      })
     }
   },
   mounted() {
@@ -278,6 +317,9 @@ export default {
       this.initial.push(res.data.data.dtId);
       this.initial.push(this.caseinfo.distId);
     })
+    if(this.$route.params.patientId != undefined){
+      this.patientstate = true;
+    }
   }
 }
 </script>
