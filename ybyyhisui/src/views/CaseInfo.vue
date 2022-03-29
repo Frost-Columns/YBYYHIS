@@ -7,11 +7,11 @@
             <el-col :md="1" style="margin: 11px">
               <span style='color: white ; font-size: 16px' >病例详情</span>
             </el-col>
+<!--            <el-col :md="1" :offset="19">-->
+<!--              <el-button type="primary" @click="modify()" size="mini">编辑</el-button>-->
+<!--            </el-col>-->
             <el-col :md="1" :offset="19">
-              <el-button type="primary" @click="modify()" size="mini">编辑</el-button>
-            </el-col>
-            <el-col :md="1">
-              <el-button type="primary" @click="back()" size="mini">返回</el-button>
+              <el-button type="primary" @click="back()" size="medium">返回</el-button>
             </el-col>
           </el-row>
         </el-header>
@@ -95,13 +95,13 @@ export default {
         this.distname = res.data.data.distnamezh;
       });
     },
-    modify(){
-      this.$router.push({
-        path: '/case/modify',
-        name: 'CaseModify',
-        params: this.caseinfo
-      })
-    },
+    // modify(){
+    //   this.$router.push({
+    //     path: '/case/modify',
+    //     name: 'CaseModify',
+    //     params: this.caseinfo
+    //   })
+    // },
     back(){
      this.$router.push("/case")
     }

@@ -12,6 +12,7 @@ import Patient from '../views/Patient'
 import Case from '../views/Case'
 import CaseInfo from "../views/CaseInfo"
 import CaseModify from "../views/CaseModify"
+import Cure from "@/views/Cure";
 
 Vue.use(VueRouter)
 
@@ -66,9 +67,9 @@ const routes = [
         component: CaseInfo
       },
       {
-        path: '/case/modify',
-        name: 'CaseModify',
-        component: CaseModify
+        path: '/cure',
+        name: 'Cure',
+        component: Cure
       }
     ]
   }

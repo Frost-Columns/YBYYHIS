@@ -9,7 +9,7 @@ import axios from 'axios'
 import moment from "moment";
 
 Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://localhost'
+axios.defaults.baseURL = 'http://localhost:8081'
 
 Vue.config.productionTip = false
 

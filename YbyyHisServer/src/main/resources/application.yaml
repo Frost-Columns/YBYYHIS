@@ -16,7 +16,7 @@ spring:
     minEvictableIdleTimeMillis: 600000
     maxEvictableIdleTimeMillis: 900000
 server:
-  port: 80
+  port: 8081
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

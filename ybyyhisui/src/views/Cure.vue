@@ -1,44 +1,51 @@
 <template>
   <div class="background">
-    <div class="patient">
+    <div class="cure">
       <el-container style="width: 104%; margin: 0px -20px">
         <el-header>
           <el-row class="row-bg">
-            <el-col :md="1" style="margin: 11px">
-              <span style='color: white ; font-size: 16px' >病例查询</span>
+            <el-col :md="2" style="margin: 11px">
+              <span style='color: white ; font-size: 16px' >检查治疗项目管理</span>
             </el-col>
             <el-col :md="3">
-              <el-input v-model="select.pname" placeholder="姓名/病历号" style="width: 95%"></el-input>
+              <el-input v-model="select.cname" placeholder="项目名关键字" style="width: 95%"></el-input>
             </el-col>
-            <el-col :md="4" style="margin: 11px">
+            <el-col :md="3" style="margin: 11px">
               <el-checkbox-group v-model="select.stateList">
-                <el-checkbox label="500">未就诊</el-checkbox>
-                <el-checkbox label="501">已就诊</el-checkbox>
+                <el-checkbox label="200">启用</el-checkbox>
+                <el-checkbox label="201">停用</el-checkbox>
               </el-checkbox-group>
             </el-col>
             <el-col :md="3">
-              <el-button type="primary" @click="getCaseList(1)">查找</el-button>
+              <el-button type="primary" @click="getCureList(1)">查找</el-button>
               <el-button @click="reset()">重置</el-button>
             </el-col>
           </el-row>
         </el-header>
         <el-main>
           <el-table
-              :data="caselist"
+              :data="curelist"
               stripe
               style="width: 100%">
             <el-table-column
-                prop="caseid"
-                label="病历号">
+                prop="cureid"
+                label="项目ID">
             </el-table-column>
             <el-table-column
-                prop="pname"
-                label="患者姓名">
+                prop="cname"
+                label="项目名">
             </el-table-column>
             <el-table-column
-                prop="createTime"
-                label="创建时间">
-              <template slot-scope="scope">{{ scope.row.sex | dateFromat }}</template>
+                prop="cnamzh"
+                label="项目中文名">
+            </el-table-column>
+            <el-table-column
+                prop="price"
+                label="项目费用">
+            </el-table-column>
+            <el-table-column
+                prop="loc"
+                label="项目地址">
             </el-table-column>
             <el-table-column
                 fixed="right"
@@ -68,85 +75,42 @@
               :total="total"
               @current-change="getCaseList">
           </el-pagination>
-<!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
+          <!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
         </el-main>
       </el-container>
-
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Case",
+  name: "Cure",
   data() {
     return {
       caselist: [],
       index: 1,
       total: 0,
-      caseinfo: {
-        caseid: '',
-        patientId: '',
-        pname: '',
-        symptom: '',
-        historyOfTreatment: '',
-        pastHistory: '',
-        allergen: '',
-        checkResultStr: '',
-        distId: '',
-        distRemarks: '',
-        cureSchedule: '',
-        prescriptionStr: '',
-        createTime: '',
-        state: '',
-        sname: ''
-      },
       select: {
-        pname: '',
-        stateList: ['500']
+        cname: '',
+        stateList: ['200']
       }
     }
   },
   methods: {
-    getCaseList(index){
+    getCureList(index) {
       var params = new URLSearchParams();
       params.append("index", index)
-      params.append("pname", this.select.pname)
+      params.append("cname", this.select.cname)
       params.append("statelist", this.select.stateList)
-      axios.post("/caselist", params).then((res) => {
+      axios.post("/curelist", params).then((res) => {
         this.index = res.data.data.current;
         this.total = res.data.data.total;
         this.caselist = res.data.data.records;
       })
-    },
-    add(){
-      for (var i in this.caseinfo) {
-        this.caseinfo[i] = '';
-      }
-      this.$router.push({
-        path: '/case/modify',
-        name: 'CaseModify',
-        params: this.caseinfo
-      })
-    },
-    caseInfo(row){
-      this.caseinfo = row;
-      this.$router.push({
-        path: '/caseinfo',
-        name: 'CaseInfo',
-        params: this.caseinfo
-      });
-    },
-    reset() {
-      for (var i in this.select) {
-        this.select[i] = '';
-      }
-      this.select.checkList = ['500', '501'];
-      this.getCaseList(1);
     }
   },
   mounted() {
-    this.getCaseList(this.index);
+    this.getCureList(index)
   }
 }
 </script>
