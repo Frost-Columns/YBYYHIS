@@ -53,7 +53,7 @@ export default {
           if(res.data.code == 200) {
             this.$message.success(res.data.msg);
             sessionStorage.setItem("token", res.data.data);
-            this.$router.push("/Main");
+            this.$router.push("/home");
           }else {
             this.$message.error(res.data.msg);
           }

@@ -15,4 +15,5 @@ public class Cure {
     private Double price;
     private String loc;
     private Integer state;
+    private String sname;
 }

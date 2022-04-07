@@ -13,7 +13,9 @@ public class CureLogs {
     @TableId(type = IdType.AUTO)
     private Integer clid;
     private Integer patientId;
+    private String pname;
     private Integer cureId;
+    private String cname;
     private Integer deptId;
     private String cureResults;
     private Byte[] cricon;

@@ -1,39 +1,37 @@
 <template>
   <div class="background">
-    <div class="patient">
+    <div class="curelogs">
       <el-container style="width: 104%; margin: 0px -20px">
         <el-header>
           <el-row class="row-bg">
             <el-col :md="1" style="margin: 11px">
-              <span style='color: white ; font-size: 16px' >病例查询</span>
+              <span style='color: white ; font-size: 16px' >项目记录</span>
             </el-col>
             <el-col :md="3">
-              <el-input v-model="select.pname" placeholder="姓名/病历号" style="width: 95%"></el-input>
-            </el-col>
-            <el-col :md="4" style="margin: 11px">
-              <el-checkbox-group v-model="select.stateList">
-                <el-checkbox label="500">未就诊</el-checkbox>
-                <el-checkbox label="501">已就诊</el-checkbox>
-              </el-checkbox-group>
+              <el-input v-model="name" placeholder="姓名/项目名" style="width: 95%"></el-input>
             </el-col>
             <el-col :md="3">
-              <el-button type="primary" @click="getCaseList(1)">查找</el-button>
+              <el-button type="primary" @click="getCaselogsList(1)">查找</el-button>
               <el-button @click="reset()">重置</el-button>
             </el-col>
           </el-row>
         </el-header>
         <el-main>
           <el-table
-              :data="caselist"
+              :data="caselogslist"
               stripe
               style="width: 100%">
             <el-table-column
-                prop="caseid"
-                label="病历号">
+                prop="clid"
+                label="ID">
             </el-table-column>
             <el-table-column
                 prop="pname"
                 label="患者姓名">
+            </el-table-column>
+            <el-table-column
+                prop="cname"
+                label="项目名称">
             </el-table-column>
             <el-table-column
                 prop="createTime"
@@ -41,17 +39,16 @@
               <template slot-scope="scope">{{ scope.row.sex | dateFromat }}</template>
             </el-table-column>
             <el-table-column
-                fixed="right"
-                prop="sname"
-                label="状态"
-                width="80">
+                prop="cureTime"
+                label="检查/治疗时间">
+              <template slot-scope="scope">{{ scope.row.sex | dateFromat }}</template>
             </el-table-column>
             <el-table-column
                 fixed="right"
                 label="操作"
                 width="155">
               <template slot-scope="scope">
-                <el-button @click="caseInfo(scope.row)"
+                <el-button @click="curelogsInfo(scope.row)"
                            v-if="scope.row.state!=101"
                            type="primary"
                            plain
@@ -66,9 +63,9 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
-              @current-change="getCaseList">
+              @current-change="getCurelogsList">
           </el-pagination>
-<!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
+          <!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
         </el-main>
       </el-container>
 
@@ -78,74 +75,50 @@
 
 <script>
 export default {
-  name: "Case",
+  name: "CureLogs",
   data() {
     return {
-      caselist: [],
+      curelogslist: [],
       index: 1,
       total: 0,
-      caseinfo: {
-        caseid: '',
-        patientId: '',
+      curelogsinfo: {
+        clid: 0,
+        patientId: 0,
         pname: '',
-        symptom: '',
-        historyOfTreatment: '',
-        pastHistory: '',
-        allergen: '',
-        checkResultStr: '',
-        distId: '',
-        distRemarks: '',
-        cureSchedule: '',
-        prescriptionStr: '',
+        cureId: 0,
+        cname: '',
+        deptId: 0,
+        cureResults: '',
+        cricon: '',
         createTime: '',
-        state: '',
-        sname: ''
+        cureTime: '',
+        checkResultTime: ''
       },
-      select: {
-        pname: '',
-        stateList: ['500']
-      }
+      name: ''
     }
   },
   methods: {
-    getCaseList(index){
+    getCaselogsList(index) {
       var params = new URLSearchParams();
       params.append("index", index)
-      params.append("pname", this.select.pname)
-      params.append("statelist", this.select.stateList)
-      axios.post("/caselist", params).then((res) => {
+      params.append("name", this.name)
+      axios.post("/curelogslist", params).then((res) => {
         this.index = res.data.data.current;
         this.total = res.data.data.total;
-        this.caselist = res.data.data.records;
+        this.curelogslist = res.data.data.records;
       })
     },
-    add(){
-      for (var i in this.caseinfo) {
-        this.caseinfo[i] = '';
-      }
+    curelogsInfo(row){
       this.$router.push({
-        path: '/case/modify',
-        name: 'CaseModify',
-        params: this.caseinfo
-      })
-    },
-    caseInfo(row){
-      this.$router.push({
-        path: '/caseinfo',
-        name: 'CaseInfo',
+        path: '/curelogsinfo',
+        name: 'CureLogsInfo',
         params: row
       });
     },
     reset() {
-      for (var i in this.select) {
-        this.select[i] = '';
-      }
-      this.select.checkList = ['500'];
+      this.name = ''
       this.getCaseList(1);
     }
-  },
-  mounted() {
-    this.getCaseList(this.index);
   }
 }
 </script>

@@ -5,14 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdlgxy.ybyyhisserver.mapper.CureMapper;
 import com.gdlgxy.ybyyhisserver.mapper.StatesMapper;
-import com.gdlgxy.ybyyhisserver.pojo.Case;
 import com.gdlgxy.ybyyhisserver.pojo.Cure;
+import com.gdlgxy.ybyyhisserver.pojo.Dept;
 import com.gdlgxy.ybyyhisserver.utils.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class CureController {
@@ -34,5 +37,40 @@ public class CureController {
             wrapper.in("state", "");
         }
         return new ResultVO<>(200, "查询成功！", cureMapper.selectPage(curePage, wrapper), null);
+    }
+
+    @PostMapping("/InsertCure")
+    public ResultVO addDept(@RequestBody Cure cure) {
+        cure.setSname("启用");
+        cureMapper.insert(cure);
+        return new ResultVO(200, "添加项目成功！", true, null);
+    }
+
+    @PostMapping("/UpdateCure")
+    public ResultVO updateDept(@RequestBody Cure cure) {
+        System.out.println(cureMapper.updateById(cure));
+        return new ResultVO(200, "项目修改成功！", true, null);
+    }
+
+    @PostMapping("/ThawCure")
+    public ResultVO thawCure(@RequestBody Cure cure) {
+        return updateStateCure(cure,200);
+    }
+
+    @PostMapping("/CancellationCure")
+    public ResultVO cancellationCure(@RequestBody Cure cure) {
+        return updateStateCure(cure,201);
+    }
+
+    private ResultVO updateStateCure(Cure cure,Integer state){
+        Map<String, Object> map = new HashMap<>();
+        map.put("stateno", state);
+        cure.setState(state);
+        cure.setSname(statesMapper.selectByMap(map).get(0).getStatename());
+        if (cureMapper.updateById(cure) == 1) {
+            return new ResultVO(200, "修改成功！", true, null);
+        } else {
+            return new ResultVO(201, "修改失败！", false, null);
+        }
     }
 }

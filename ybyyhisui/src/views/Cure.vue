@@ -36,7 +36,7 @@
                 label="项目名">
             </el-table-column>
             <el-table-column
-                prop="cnamzh"
+                prop="cnamezh"
                 label="项目中文名">
             </el-table-column>
             <el-table-column
@@ -58,12 +58,24 @@
                 label="操作"
                 width="155">
               <template slot-scope="scope">
-                <el-button @click="caseInfo(scope.row)"
-                           v-if="scope.row.state!=101"
-                           type="primary"
-                           plain
+                <el-button @click="modifyCure(scope.row)"
+                           v-if="scope.row.state!=201"
+                           type="text"
                            size="small">
-                  详细信息
+                  编辑
+                </el-button>
+                <el-button @click="updateStateCure(scope.row,2)"
+                           v-if="scope.row.state==201"
+                           type="text"
+                           size="small"
+                           slot="reference">
+                  启用
+                </el-button>
+                <el-button @click="updateStateCure(scope.row,1)"
+                           v-if="scope.row.state!=201"
+                           type="text"
+                           size="small">
+                  停用
                 </el-button>
               </template>
             </el-table-column>
@@ -75,9 +87,32 @@
               :total="total"
               @current-change="getCaseList">
           </el-pagination>
-          <!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
+          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>
         </el-main>
       </el-container>
+
+      <el-drawer
+          :title="title"
+          :visible.sync="drawer">
+        <el-form :model="curefrom" ref="curefrom" :rules="rules" label-position="right">
+          <el-form-item prop="cname" label="项目名" style="width: 80%; margin: 20px 10%">
+            <el-input v-model="curefrom.cname" placeholder="项目名"></el-input>
+          </el-form-item>
+          <el-form-item prop="cnamezh" label="项目中文名" style="width: 80%; margin: 20px 10%">
+            <el-input v-model="curefrom.cnamezh" placeholder="项目中文名"></el-input>
+          </el-form-item>
+          <el-form-item prop="price" label="价格" style="width: 80%; margin: 20px 10%">
+            <el-input type="number" min="0" v-model="curefrom.price" placeholder="价格"></el-input>
+          </el-form-item>
+          <el-form-item prop="loc" label="地址" style="width: 80%; margin: 20px 10%">
+            <el-input v-model="curefrom.loc" placeholder="地址"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit('curefrom')">提交</el-button>
+            <el-button @click="drawer = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-drawer>
     </div>
   </div>
 </template>
@@ -87,12 +122,36 @@ export default {
   name: "Cure",
   data() {
     return {
-      caselist: [],
+      curelist: [],
       index: 1,
       total: 0,
+      title: '',
+      drawer: false,
+      curefrom: {
+        cureid: 0,
+        cname: '',
+        cnamezh: '',
+        price: 0,
+        loc: ''
+      },
       select: {
+        cureid: '',
         cname: '',
         stateList: ['200']
+      },
+      rules: {
+        cname: [
+          {required: true, message: '请输入项目名', trigger: 'blur'}
+        ],
+        cnamezh: [
+          {required: true, message: '请输入项目中文名名', trigger: 'blur'}
+        ],
+        price: [
+          {required: true, message: '请输入价格', trigger: 'blur'}
+        ],
+        loc: [
+          {required: true, message: '请输入地址', trigger: 'blur'}
+        ]
       }
     }
   },
@@ -105,12 +164,88 @@ export default {
       axios.post("/curelist", params).then((res) => {
         this.index = res.data.data.current;
         this.total = res.data.data.total;
-        this.caselist = res.data.data.records;
+        this.curelist = res.data.data.records;
       })
+    },
+    add() {
+      this.title = '项目添加';
+      if(this.$refs['curefrom']!==undefined){
+        this.$refs['curefrom'].resetFields();
+      }
+      for (var i in this.curefrom) {
+        this.curefrom[i] = '';
+      }
+      this.curefrom.price = 0;
+      this.drawer = true;
+    },
+    modifyCure(row) {
+      this.title = '项目信息修改';
+      if(this.$refs['curefrom']!==undefined){
+        this.$refs['curefrom'].resetFields();
+      }
+      this.curefrom = Object.assign({}, row);  //深拷贝
+      this.drawer = true;
+    },
+    onSubmit(dfrom) {
+      this.$refs[dfrom].validate((valid) => {
+        if (valid) {
+          var url = '';
+          if (this.curefrom.cureid == '') {
+            url = '/InsertCure';
+          } else {
+            url = '/UpdateCure';
+          }
+          axios.post(url, this.curefrom).then((res) => {
+            if (res.data.data) {
+              this.$message.success(res.data.msg);
+              this.getCureList(this.index);
+              this.drawer = false;
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          })
+        } else {
+          return false;
+        }
+      });
+    },
+    updateStateCure(row, state) {
+      var url = '';
+      var title = '';
+      if (state == 1) {
+        title = '确认要停用该项目？';
+        url = '/CancellationCure';
+      } else if (state == 2) {
+        title = '确认要启用该项目？';
+        url = '/ThawCure';
+      }
+      this.$confirm(title, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post(url, row).then((res) => {
+          if(res.data.code == 200) {
+            this.$message.success(res.data.msg);
+            this.getCureList(this.index);
+          }else {
+            this.$message.error(res.data.msg);
+          }
+        })
+      }).catch(() => {
+        return
+      })
+    },
+    reset() {
+      for (var i in this.select) {
+        this.select[i] = '';
+      }
+      this.select.stateList = ['200'];
+      this.getCureList(1);
     }
   },
   mounted() {
-    this.getCureList(index)
+    this.getCureList(this.index)
   }
 }
 </script>
