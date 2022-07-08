@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 @Data
 @TableName("tbl_case")
 public class Case {
-    @TableId
-    private String caseid;
+    @TableId(type = IdType.AUTO)
+    private Integer caseid;
     private Integer patientId;
     private String pname;
     private String symptom;
@@ -19,7 +19,6 @@ public class Case {
     private String pastHistory;
     private String allergen;
     private String checkResultStr;
-    private Integer distId;
     private String distRemarks;
     private String cureSchedule;
     private String prescriptionStr;

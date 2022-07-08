@@ -14,6 +14,15 @@ import CaseInfo from "../views/CaseInfo"
 import Cure from "@/views/Cure";
 import CureLogs from "@/views/CureLogs";
 import Dist from "@/views/Dist";
+import Drugs from "@/views/Drugs";
+import Recipel from "@/views/Recipel";
+import Medicals from "@/views/Medicals";
+import Register from "@/views/Register";
+import CaseModify from "@/views/CaseModify";
+import RegisterGroup from "@/views/RegisterGroup";
+import CureCheck from "@/views/CureCheck";
+import CureInfo from "@/views/CureInfo";
+import CureMana from "@/views/CureMana";
 
 Vue.use(VueRouter)
 
@@ -81,7 +90,47 @@ const routes = [
         path: '/dist',
         name: 'Dist',
         component: Dist
-      }
+      },
+      {
+        path: '/drugs',
+        name: 'Drugs',
+        component: Drugs
+      },
+      {
+        path: '/recipel',
+        name: 'Recipel',
+        component: Recipel
+      },
+      {
+        path: '/medicals',
+        name: 'Medicals',
+        component: Medicals
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register
+      },
+      {
+        path: '/registerGroup',
+        name: 'RegisterGroup',
+        component: RegisterGroup
+      },
+      {
+        path: '/curecheck',
+        name: 'CureCheck',
+        component: CureCheck
+      },
+      {
+        path: '/curemana',
+        name: 'CureMana',
+        component: CureMana
+      },
+      {
+        path: '/cureinfo',
+        name: 'CureInfo',
+        component: CureInfo
+      },
     ]
   }
 ]

@@ -14,6 +14,7 @@ public class CureList {
     private Integer clid;
     private Integer patientId;
     private Integer cureId;
+    private String cname;
     private String loc;
     private Integer deptId;
     private Timestamp createTime;

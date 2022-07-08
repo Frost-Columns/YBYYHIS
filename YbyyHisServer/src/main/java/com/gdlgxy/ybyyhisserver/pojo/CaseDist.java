@@ -8,15 +8,12 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-@TableName("tbl_register")
-public class Register {
+@TableName("tbl_case_dist")
+public class CaseDist {
     @TableId(type = IdType.AUTO)
-    private Integer registerid;
-    private Integer deptId;
-    private Timestamp createTime;
-    private Integer meridiem;
-    private Integer userId;
-    private Integer surcount;
-    private Integer state;
-    private Integer rlId;
+    private String cdid;
+    private Integer caseId;
+    private Integer distId;
+    private String dname;
+    private String remarks;
 }

@@ -77,7 +77,7 @@ public class RDController {
 
     @PostMapping("/UpdateDept")
     public ResultVO updateDept(@RequestBody Dept dept) {
-        System.out.println(deptMapper.updateById(dept));
+        deptMapper.updateById(dept);
         return new ResultVO(200, "部门修改成功！", true, null);
     }
 

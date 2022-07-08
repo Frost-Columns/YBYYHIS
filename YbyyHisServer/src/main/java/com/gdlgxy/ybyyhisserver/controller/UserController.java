@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdlgxy.ybyyhisserver.mapper.StatesMapper;
 import com.gdlgxy.ybyyhisserver.mapper.UserInfoMapper;
+import com.gdlgxy.ybyyhisserver.pojo.RegisterGroup;
 import com.gdlgxy.ybyyhisserver.pojo.UserInfo;
 import com.gdlgxy.ybyyhisserver.utils.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,12 @@ public class UserController {
         } else {
             return new ResultVO(201, "修改失败！", false, null);
         }
+    }
+
+    @PostMapping("/UserGroupList")
+    private ResultVO getUserGroupList(Integer dtId){
+        QueryWrapper<UserInfo> wrapper = new QueryWrapper<>();
+        wrapper.in("dt_id",dtId).in("role_id",2);
+        return new ResultVO(201, "查询成功！", userInfoMapper.selectList(wrapper), null);
     }
 }

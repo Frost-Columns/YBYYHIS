@@ -12,8 +12,8 @@
             </el-col>
             <el-col :md="3" style="margin: 11px">
               <el-checkbox-group v-model="select.stateList">
-                <el-checkbox label="200">启用</el-checkbox>
-                <el-checkbox label="201">停用</el-checkbox>
+                <el-checkbox label="600">检查项目</el-checkbox>
+                <el-checkbox label="1000">治疗项目</el-checkbox>
               </el-checkbox-group>
             </el-col>
             <el-col :md="3">
@@ -85,7 +85,8 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
-              @current-change="getCaseList">
+              :current-page="index"
+              @current-change="getCureList">
           </el-pagination>
           <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>
         </el-main>
@@ -106,6 +107,12 @@
           </el-form-item>
           <el-form-item prop="loc" label="地址" style="width: 80%; margin: 20px 10%">
             <el-input v-model="curefrom.loc" placeholder="地址"></el-input>
+          </el-form-item>
+          <el-form-item prop="state" label="项目类型：" style="width: 80%; margin: 20px 10%">
+            <el-radio-group v-model="curefrom.state">
+              <el-radio :label="600">检查项目</el-radio>
+              <el-radio :label="1000">治疗项目</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('curefrom')">提交</el-button>
@@ -132,12 +139,13 @@ export default {
         cname: '',
         cnamezh: '',
         price: 0,
-        loc: ''
+        loc: '',
+        state: 600
       },
       select: {
         cureid: '',
         cname: '',
-        stateList: ['200']
+        stateList: []
       },
       rules: {
         cname: [
@@ -151,6 +159,9 @@ export default {
         ],
         loc: [
           {required: true, message: '请输入地址', trigger: 'blur'}
+        ],
+        state: [
+          {required: true, message: '请选择项目类型', trigger: 'blur'}
         ]
       }
     }
@@ -240,7 +251,7 @@ export default {
       for (var i in this.select) {
         this.select[i] = '';
       }
-      this.select.stateList = ['200'];
+      this.select.stateList = [];
       this.getCureList(1);
     }
   },

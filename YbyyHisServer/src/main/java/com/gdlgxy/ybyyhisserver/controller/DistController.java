@@ -45,6 +45,17 @@ public class DistController {
         return new ResultVO<>(200, "查询成功！", distMapper.selectPage(distPage, wrapper), null);
     }
 
+    @PostMapping("/getDistList")
+    public ResultVO getDistList2(String dname){
+        if (dname != null && !dname.equals("")) {
+            QueryWrapper<Dist> wrapper = new QueryWrapper<>();
+            wrapper.and(i -> i.like("distname", dname).or().like("distnamezh",dname));
+            return new ResultVO<>(200, "查询成功！", distMapper.selectList(wrapper), null);
+        } else {
+            return new ResultVO<>(200, "查询成功！", null, null);
+        }
+    }
+
     @PostMapping("/addDistType")
     public ResultVO insertDistType(@RequestBody DistType distType) {
         return new ResultVO(200,"添加成功!",distTypeMapper.insert(distType),null);

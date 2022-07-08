@@ -5,15 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
-@TableName("tbl_prescription")
-public class Prescription {
+@TableName("tbl_register_group")
+public class RegisterGroup {
     @TableId(type = IdType.AUTO)
-    private Integer presid;
-    private Integer caseId;
-    private Integer drugsId;
-    private Integer count;
-    private Double price;
-    private String takeRemarks;
-    private Integer state;
+    private Integer rgid;
+    private Integer dtId;
+    private String rgname;
+    private String remarks;
+    private Timestamp createTime;
 }

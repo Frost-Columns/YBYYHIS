@@ -11,14 +11,14 @@
               <el-input v-model="name" placeholder="姓名/项目名" style="width: 95%"></el-input>
             </el-col>
             <el-col :md="3">
-              <el-button type="primary" @click="getCaselogsList(1)">查找</el-button>
+              <el-button type="primary" @click="getCurelogsList(1)">查找</el-button>
               <el-button @click="reset()">重置</el-button>
             </el-col>
           </el-row>
         </el-header>
         <el-main>
           <el-table
-              :data="caselogslist"
+              :data="curelogslist"
               stripe
               style="width: 100%">
             <el-table-column
@@ -44,12 +44,16 @@
               <template slot-scope="scope">{{ scope.row.sex | dateFromat }}</template>
             </el-table-column>
             <el-table-column
+                prop="sname"
+                label="状态">
+            </el-table-column>
+            <el-table-column
                 fixed="right"
                 label="操作"
                 width="155">
               <template slot-scope="scope">
                 <el-button @click="curelogsInfo(scope.row)"
-                           v-if="scope.row.state!=101"
+                           v-if="scope.row.state == 602 || scope.row.state == 1002"
                            type="primary"
                            plain
                            size="small">
@@ -63,12 +67,37 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
+              :current-page="index"
               @current-change="getCurelogsList">
           </el-pagination>
           <!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
         </el-main>
       </el-container>
 
+      <el-dialog
+          :title="title"
+          :visible.sync="drawer">
+        <el-row>
+          <el-col :span="12">
+            <div class="right">
+              <img class="mx-auto d-block img-thumbnail" style="width: 300px; height:300px;" :src='cricon' />
+            </div>
+
+          </el-col>
+          <el-col :span="12">
+            <span>治疗结果</span>
+            <el-input
+                type="textarea"
+                placeholder="检查结果"
+                v-model="curelogsinfo.cureResults"
+                disabled
+                :rows="10"
+                resize="none"
+                show-word-limit>
+            </el-input>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -81,24 +110,14 @@ export default {
       curelogslist: [],
       index: 1,
       total: 0,
-      curelogsinfo: {
-        clid: 0,
-        patientId: 0,
-        pname: '',
-        cureId: 0,
-        cname: '',
-        deptId: 0,
-        cureResults: '',
-        cricon: '',
-        createTime: '',
-        cureTime: '',
-        checkResultTime: ''
-      },
-      name: ''
+      curelogsinfo: {},
+      cricon: '',
+      name: '',
+      drawer: false
     }
   },
   methods: {
-    getCaselogsList(index) {
+    getCurelogsList(index) {
       var params = new URLSearchParams();
       params.append("index", index)
       params.append("name", this.name)
@@ -109,16 +128,21 @@ export default {
       })
     },
     curelogsInfo(row){
-      this.$router.push({
-        path: '/curelogsinfo',
-        name: 'CureLogsInfo',
-        params: row
-      });
+      this.curelogsinfo = row
+      this.cricon = this.curelogsinfo.cricon.replaceAll("\\", "/");
+      this.drawer = true
+      // this.$router.push({
+      //   path: '/curelogsinfo',
+      //   name: 'CureLogsInfo',
+      //   params: row
+      // });
     },
     reset() {
       this.name = ''
-      this.getCaseList(1);
+      this.getCureList(1);
     }
+  },mounted() {
+    this.getCurelogsList(this.index)
   }
 }
 </script>

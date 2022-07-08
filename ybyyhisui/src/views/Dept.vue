@@ -95,6 +95,7 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
+              :current-page="index"
               @current-change="getDeptList">
           </el-pagination>
           <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>

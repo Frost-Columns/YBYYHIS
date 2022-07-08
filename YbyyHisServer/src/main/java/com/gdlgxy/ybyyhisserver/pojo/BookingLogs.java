@@ -14,6 +14,7 @@ public class BookingLogs {
     private Integer blid;
     private Integer registerId;
     private Integer patientId;
+    private String pname;
     private Integer state;
     private Timestamp createTime;
 }

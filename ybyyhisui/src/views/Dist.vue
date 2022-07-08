@@ -5,7 +5,7 @@
       <el-header>
         <el-row class="row-bg">
           <el-col :md="1" style="margin: 11px;">
-            <span style='color: white ; font-size: 16px'>病例查询</span>
+            <span style='color: white ; font-size: 16px'>诊断类型查询</span>
           </el-col>
         </el-row>
       </el-header>
@@ -121,6 +121,7 @@
                 layout="prev, pager, next"
                 :page-size="10"
                 :total="total"
+                :current-page="index"
                 @current-change="getDistList">
             </el-pagination>
           </div>

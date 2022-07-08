@@ -80,7 +80,7 @@
                 prop="createTime"
                 label="创建时间"
                 width="180">
-              <template slot-scope="scope">{{ scope.row.sex | dateFromat }}</template>
+              <template slot-scope="scope">{{ scope.row.createTime | dateFromat }}</template>
             </el-table-column>
             <el-table-column
                 prop="uprofile"
@@ -131,6 +131,7 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
+              :current-page="index"
               @current-change="getUserList">
           </el-pagination>
           <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>

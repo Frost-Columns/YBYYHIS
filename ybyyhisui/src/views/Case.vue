@@ -13,7 +13,8 @@
             <el-col :md="4" style="margin: 11px">
               <el-checkbox-group v-model="select.stateList">
                 <el-checkbox label="500">未就诊</el-checkbox>
-                <el-checkbox label="501">已就诊</el-checkbox>
+                <el-checkbox label="501">就诊中</el-checkbox>
+                <el-checkbox label="502">已就诊</el-checkbox>
               </el-checkbox-group>
             </el-col>
             <el-col :md="3">
@@ -66,6 +67,7 @@
               layout="prev, pager, next"
               :page-size="10"
               :total="total"
+              :current-page="index"
               @current-change="getCaseList">
           </el-pagination>
 <!--          <el-button @click="add()" fixed="right" class="add" type="success" icon="el-icon-plus" circle></el-button>-->
@@ -103,7 +105,7 @@ export default {
       },
       select: {
         pname: '',
-        stateList: ['500']
+        stateList: ['500','501']
       }
     }
   },

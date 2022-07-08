@@ -27,7 +27,6 @@
       </el-container>
 
     </el-container>
-    <el-footer style="text-align: right; font-size: 12px">Footer</el-footer>
   </div>
 </template>
 
@@ -60,6 +59,6 @@ export default {
 }
 
 .background {
-  height: 87%;
+  height: 93%;
 }
 </style>

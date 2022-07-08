@@ -13,7 +13,8 @@ public class TreatmentLogs {
     @TableId(type = IdType.AUTO)
     private Integer tlid;
     private Integer registerId;
-    private Integer patientId;
-    private Timestamp createTime;
     private Integer caseId;
+    private String pname;
+    private Timestamp updateTime;
+    private Integer state;
 }
